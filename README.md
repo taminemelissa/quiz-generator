@@ -1,1 +1,1 @@
-# quiz-generator
+# Quiz Generator
