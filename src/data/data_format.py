@@ -85,7 +85,7 @@ class Question(BaseItem):
         """
         :param text: the text of the question
         :param identifier: the identifier of the question
-        :param scores: the score dict of the question
+        :param scores: the score dictionary of the question
         :param vector: the vector representation of the question
         :param meta: the meta information
         :param gold_answers: the gold answers of the question
