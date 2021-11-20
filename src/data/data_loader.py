@@ -1,38 +1,55 @@
 import tensorflow as tf
-from functools import partial
+import numpy as np
+
+import nltk
+
+try:
+    import constants as c
+except ImportError:
+    c = None
+    raise ImportError('constants' + ' not imported')
 
 
 
+# ******************** global constants ******************
 
-#******************** global constants ******************
-
-path = '/coding_linux20/programming/datasets/wikitext-2-raw'
 AUTOTUNE = tf.data.AUTOTUNE
 
 
 
 
-#********************* loading *************************
+
+# ********************* loading *************************
 
 class DataLoader:
 
     def __init__(self, path: str) -> None:
         """[summary]
-
+        the datasets are always in bytes, but sometimes the lists returned are in string like combine_first_strings
+        
         Args:
             path ([type]): [description]
+            language ([type]): ex : 'english'
         """
         self.path = path
-    
-    
+        
+        
     def load(self) -> None:
-        """[summary]
+        """
+        self.ds : the dataset, can be lowered, but never split
+            tf.Tensor: shape=(x,), dtype=string, where x varies
+            
+        self.ds_split : the dataset split
+            tf.Tensor: shape=(), dtype=string
+            
         """
     
         self.ds = tf.data.TextLineDataset(self.path)
         
+        self.ds_split = None
+        
     
-    def prepare(self, lower = True, split = True) :
+    def prepare(self, lower = True, split = True):
         """
         TODO faire en sorte qu'il y ait un seul mapping au lieu de 3 -> plus vite
         TODO traduire en anglais
@@ -47,6 +64,13 @@ class DataLoader:
         filtre les titres de paragraphes wikipedia
 
         cache et prefetch pour plus de rapidité
+
+        
+        remove_symbols is equivalent of 'isalpha()'
+        
+        Args:
+            lower (bool, optional): [description]. Defaults to True.
+            split (bool, optional): [description]. Defaults to True.
         """
     
         def content_filter(x: tf.Tensor) -> tf.Tensor:
@@ -73,7 +97,7 @@ class DataLoader:
             
             return remove_first_and_last_spaces(remove_multiple_spaces(remove_symbols(remove_the_at(x))))
 
-        #*************basic treatment************
+        # ************* basic treatment ************
         
         ds = self.ds.map(lambda x: tf.strings.split(x, ' . '))
         ds = ds.map(all_mapping_in_one, num_parallel_calls = AUTOTUNE)
@@ -84,13 +108,15 @@ class DataLoader:
         ds = ds.filter(lambda x: tf.cast(tf.strings.length(x)-1, bool))
         self.ds = ds.filter(content_filter)
         
+        # ************* additional treatment ************
+        
         if lower:
             self.lower()
-        
+                
         if split:
             self.split()
         
-        return self.ds
+        return self.ds_split
     
     
     def lower(self):
@@ -100,6 +126,37 @@ class DataLoader:
         
     def split(self):
         
-        self.ds = self.ds.map(lambda s : tf.strings.split(s, sep = ' '), num_parallel_calls = AUTOTUNE)
+        self.ds_split = self.ds.map(lambda s : tf.strings.split(s, sep = ' '), num_parallel_calls = AUTOTUNE)
     
+    def without_stopwords(self):
+        
+        if not hasattr(self, 'ds_split'):
+            self.split()
+        
+        self.ds_split_without_stopwords = self.ds_split.map(lambda s : tf.map_fn(lambda w : w if w.numpy().decode('utf-8') not in c.STOPWORDS, s), num_parallel_calls = AUTOTUNE)
 
+        self.ds_without_stopwords = self.ds_split_without_stopwords.map(lambda s : tf.strings.join(s, separator = ' '))
+        
+
+    def combine_first_strings(self, n_strings):
+        """useful for wordcloud
+
+        Args:
+            n_strings ([type]): [description]
+        """
+        combined_strings = ' '.join([s.numpy().decode('utf-8') for s in self.ds.take(n_strings).__iter__()])
+        
+        return combined_strings
+    
+    def combine_first_strings_without_stopwords(self, n_strings):
+        """[summary]
+
+        Args:
+            n_strings ([type]): [description]
+        """
+        if not hasattr(self, 'ds_without_stopwords'):
+            self.without_stopwords()
+        
+        combined_strings = ' '.join([s.numpy().decode('utf-8') for s in self.ds_without_stopwords.take(n_strings).__iter__()])
+        
+        return combined_strings
