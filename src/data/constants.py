@@ -2,7 +2,9 @@ LANGUAGE = 'english'
 
 PATH = '/coding_linux20/programming/datasets/wikitext-2-raw' + '/wiki.train.raw'
 
-N_STRING_WORDCLOUD = 100
+N_STRINGS = 100000
+
+N_MOST_COMMON = 30
 
 from nltk.corpus import stopwords
 try:

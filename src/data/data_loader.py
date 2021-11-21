@@ -72,6 +72,9 @@ class DataLoader:
             lower (bool, optional): [description]. Defaults to True.
             split (bool, optional): [description]. Defaults to True.
         """
+        
+        if not hasattr(self, 'ds'):
+            self.load()
     
         def content_filter(x: tf.Tensor) -> tf.Tensor:
 
@@ -115,8 +118,8 @@ class DataLoader:
                 
         if split:
             self.split()
-        
-        return self.ds_split
+                
+        return self.ds_split if self.ds_split is not None else self.ds
     
     
     def lower(self):
@@ -128,23 +131,40 @@ class DataLoader:
         
         self.ds_split = self.ds.map(lambda s : tf.strings.split(s, sep = ' '), num_parallel_calls = AUTOTUNE)
     
-    def without_stopwords(self):
-        
-        if not hasattr(self, 'ds_split'):
-            self.split()
-        
-        self.ds_split_without_stopwords = self.ds_split.map(lambda s : tf.map_fn(lambda w : w if w.numpy().decode('utf-8') not in c.STOPWORDS, s), num_parallel_calls = AUTOTUNE)
+    def without_stopwords(self, n_strings):
+        """when iterating over tf.Dataset, you can't iterate over one element with a comprehension list or tf.map_fn
+        to remove the stopwords, we have to do it from the combined_strings
 
-        self.ds_without_stopwords = self.ds_split_without_stopwords.map(lambda s : tf.strings.join(s, separator = ' '))
+        Args:
+            n_strings ([type]): [description]
+        Returns:
+            string
+        """     
+        combined_strings = self.combine_first_strings(n_strings)
+        word_list = combined_strings.split()
+        word_list_without_stop_words = [w for w in word_list if w not in c.STOPWORDS]
         
+        return word_list_without_stop_words    
 
     def combine_first_strings(self, n_strings):
         """useful for wordcloud
 
         Args:
             n_strings ([type]): [description]
+        Returns:
+            string
         """
         combined_strings = ' '.join([s.numpy().decode('utf-8') for s in self.ds.take(n_strings).__iter__()])
+        
+        return combined_strings
+    
+    def combine_first_strings_all_ds(self, n_strings):
+        """[summary]
+
+        Args:
+            n_strings ([type]): [description]
+        """
+        combined_strings = self.ds.reduce('', lambda s, s_: s + ' ' + s_)
         
         return combined_strings
     
