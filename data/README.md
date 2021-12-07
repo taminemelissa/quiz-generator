@@ -12,7 +12,7 @@ python -m wikiextractor.WikiExtractor -o "quiz-generator/data/wikipedia/" --json
 # Remove the compressed file
 rm "quiz-generator/data/wikipedia/frwiki-latest-pages-articles.xml.bz2"
 ```
-
+## Final structure of the data folder
 The structure of the data folder looks like this :
 ```
 ├── data 
