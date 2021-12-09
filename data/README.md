@@ -1,23 +1,31 @@
-## French Wikipedia Dump
+## English Wikipedia Dump
 
-We download the latest French Wikipedia dump and extract its text using WikiExtractor in order to use ElasticSearch on it. 
+We download the latest English Wikipedia dump and extract its text using WikiExtractor in order to use ElasticSearch on it. 
 
 ```
-# Get the latest French Wikipedia dump
-wget "http://download.wikimedia.org/frwiki/latest/frwiki-latest-pages-articles.xml.bz2"
+# Get the latest English Wikipedia dump
+wget "http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2"
 
 # Extract its text using WikiExtractor
-python -m wikiextractor.WikiExtractor -o "quiz-generator/data/wikipedia/" --json --processes 12 "quiz-generator/data/wikipedia/frwiki-latest-pages-articles.xml.bz2"
+python -m wikiextractor.WikiExtractor -o "quiz-generator/data/wikipedia/" --json --processes 12 "quiz-generator/data/wikipedia/enwiki-latest-pages-articles.xml.bz2"
 
 # Remove the compressed file
-rm "quiz-generator/data/wikipedia/frwiki-latest-pages-articles.xml.bz2"
+rm "quiz-generator/data/wikipedia/enwiki-latest-pages-articles.xml.bz2"
+```
+
+## English Stanza
+We download the English version of Stanza.
+```
+import stanza
+stanza.download('en', model_dir="quiz-generator/data/models/stanza")
 ```
 ## Final structure of the data folder
 The structure of the data folder looks like this :
 ```
 ├── data 
-    ├── datasets
-    ├── models
+    ├── stanza    
+        ├── en
+        ├── ressources.json
     └── wikipedia
         ├── AA
         ├── AB
