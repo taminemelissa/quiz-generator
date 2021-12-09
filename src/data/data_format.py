@@ -109,3 +109,9 @@ class QuestionContextAnswer:
 
     def __getitem__(self, index):
         return self.questions[index]
+
+    def get_all_answers(self):
+        all_answers = []
+        for q in self.questions:
+            all_answers += q.get_all_answers()
+        return all_answers
