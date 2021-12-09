@@ -1,3 +1,4 @@
+import json
 from typing import Dict, List, Any, OrderedDict, Union
 import numpy as np
 import collections
@@ -79,6 +80,7 @@ class Question(BaseItem):
                  scores: OrderedDict[str, float] = None,
                  vector: np.ndarray = None,
                  meta: Dict[str, Any] = None,
+                 retrieved_contexts: List[Context] = None,
                  gold_answers: List[Answer] = None,
                  predicted_answers: List[Answer] = None
                  ):
@@ -87,13 +89,53 @@ class Question(BaseItem):
         :param identifier: the identifier of the question
         :param scores: the score dictionary of the question
         :param vector: the vector representation of the question
+        :param retrieved_contexts: the retrieved documents as contexts for this question, if a retriever is involved
         :param meta: the meta information
         :param gold_answers: the gold answers of the question
         :param predicted_answers: the predicted answers of the question
         """
         super(Question, self).__init__(text=text, identifier=identifier, scores=scores, vector=vector, meta=meta)
         self.gold_answers = gold_answers
+        self.retrieved_contexts = retrieved_contexts
         self.predicted_answers = predicted_answers
+
+    @staticmethod
+    def _get_contexts(answers) -> List[Context]:
+        context_ids = []
+        contexts = []
+        if answers:
+            for a in answers:
+                if a.context and a.context.identifier not in context_ids:
+                    context_ids.append(a.context.identifier)
+                    contexts.append(a.context)
+        return contexts
+
+    def get_gold_contexts(self) -> List[Context]:
+        return self._get_contexts(self.gold_answers)
+
+    def get_predicted_contexts(self) -> List[Context]:
+        return self._get_contexts(self.predicted_answers)
+
+    def get_all_contexts(self) -> List[Context]:
+        context_ids = []
+        contexts = []
+        gold_contexts = self.get_gold_contexts()
+        pred_contexts = self.get_predicted_contexts()
+        retrieved_contexts = self.retrieved_contexts if self.retrieved_contexts else []
+        all_contexts = gold_contexts + pred_contexts + retrieved_contexts
+        for c in all_contexts:
+            if c.identifier not in context_ids:
+                context_ids.append(c.identifier)
+                contexts.append(c)
+        return contexts
+
+    def get_all_answers(self) -> List[Answer]:
+        all_answers = []
+        if self.gold_answers:
+            all_answers += self.gold_answers
+        if self.predicted_answers:
+            all_answers += self.predicted_answers
+        return all_answers
 
 
 class QuestionContextAnswer:
