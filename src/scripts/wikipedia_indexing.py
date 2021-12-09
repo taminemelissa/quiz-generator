@@ -114,7 +114,7 @@ def run_indexing(client: Elasticsearch, args):
                 "analyzer": {
                     "default": {
                         "type": "standard",
-                        "stopwords": "_french_"
+                        "stopwords": "_english_"
                     }
                 }
             }
