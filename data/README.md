@@ -17,7 +17,7 @@ rm "quiz-generator/data/wikipedia/enwiki-latest-pages-articles.xml.bz2"
 We download the English version of Stanza.
 ```
 import stanza
-stanza.download('en', model_dir="quiz-generator/data/models/stanza")
+stanza.download('en', model_dir="quiz-generator/data/stanza")
 ```
 ## Final structure of the data folder
 The structure of the data folder looks like this :
