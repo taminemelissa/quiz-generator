@@ -1,31 +1,33 @@
-# Conventions d'alignements
+# Alignment conventions
 
 
 
-## Sauts :
-une ligne entre chaque partie au sein d'une même fonction,  
-deux lignes entre les fonctions au sein d'une même class,  
-trois lignes entre les class ou fonctions indépendantes  
+## Lign breaks :
+A single line between each party within the same function, 
+two lines between functions within the same class, 
+three lines between classes or independent functions. 
 
 
 
-## Majuscules :
-constantes en majuscules  
-fonction et variables en snake_case  
-class et exceptions en CamelCase  
+## Capitals :
+Capital-letter constants, 
+function and variables in snake_case, 
+class and exceptions in CamelCase.
 
 
 
-## Espaces :
-un espace entre les operations : 3 + 2  
-et après les virgules  
+## Spaces :
+A space between operations: 3 + 2, 
+and after the commas.
 
 
 
-## presentation des fonctions:
-type ajouté, de la forme   
+## Presentation of functions:
+Type-hint added this way, 
 ``` 
 def __init__(self, k:int) -> None:
         pass
 ``` 
-description de la fonction juste après le def dans des triples guillemets, pas avec # au milieu dans les versions "propres"
+description of the function just after the def in double quotes, not with # in the middle in "clean" versions, 
+single quotes instead of double quotes for strings.
+

@@ -6,3 +6,15 @@ N_STRINGS = 10000000
 
 N_MOST_COMMON = 30
 
+
+
+
+
+#******************************************
+
+
+
+
+
+PATH_TO_PICKLE = '../../data/example_paragraph'
+
