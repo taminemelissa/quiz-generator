@@ -1,6 +1,4 @@
-# TODO : Write the summaries for each function
 # TODO : We load from pickle files, perhaps it will change
-# TODO : Set the language to french
 import nltk
 from nltk.corpus import stopwords
     
@@ -35,7 +33,7 @@ class TextProcessing:
     
     self.sequences is a list of sequences
     self.text is the whole concatenated text
-    self.text_split is a list of the split text
+    self.text_split is the list of the split text
     """
     
     def __init__(self, path: str) -> None:
@@ -49,11 +47,12 @@ class TextProcessing:
     
     
     def load(self) -> None:
-        """
-        load the sentences in a list of sequences
+        """[summary]
+        Loads everything in the pickle file
         """
         
         self.sequences = []
+        
         with open(self.path, 'rb') as f:
             while True:
                 try:
@@ -67,13 +66,15 @@ class TextProcessing:
 
     def prepare(self, lower: bool = True, split: bool = True) -> None:
         """[summary]
+        Gets the text ready to input it in the next functions
+        Removes the first and last spaces
+        It can create the following attributes, defined above the __init__:
+        self.text
+        self.text_split
         
         Args:
-            lower (bool, optional): [description]. Defaults to True.
-            split (bool, optional): [description]. Defaults to True.
-
-        Returns:
-            str: [description]
+            lower (bool, optional): whether to lower the text (create self.text) or not. Defaults to True.
+            split (bool, optional): whether to split the text (create self.text_split) or not. Defaults to True.
         """
         
         if not hasattr(self, 'sequences'):
@@ -106,7 +107,12 @@ class TextProcessing:
         self.text_split = self.text.split()
     
     
-    def without_stopwords(self) -> str:
+    def without_stopwords(self) -> List[str]:
+        """[summary]
+
+        Returns:
+            List[str]: list of words that are not stop words
+        """
         
         if not hasattr(self, 'text'):
             self.prepare() #by default it creates text_split
@@ -115,7 +121,13 @@ class TextProcessing:
         
         return self.word_list_without_stop_words
     
-    def without_stopwords_concatenated(self):
+    
+    def without_stopwords_concatenated(self) -> str:
+        """[summary]
+
+        Returns:
+            str: string of the words that are not stopwords
+        """
         
         if not hasattr(self, 'word_list_without_stop_words'):
             self.without_stopwords() 
@@ -124,7 +136,17 @@ class TextProcessing:
         
         return self.text_without_stopwords
 
+
+
 def cardinality_of_words(l: List[str]) -> Dict[str, int]:
+    """[summary]
+
+    Args:
+        l (List[str]): list of words
+
+    Returns:
+        Dict[str, int]: dictionary of the number of occurences per word in the list of words
+    """
     
     cardinalities = {}
     
