@@ -1,4 +1,4 @@
-LANGUAGE = 'english'
+LANGUAGE = 'french'
 
 PATH = '/coding_linux20/programming/datasets/wikitext-2-raw' + '/wiki.train.raw'
 
