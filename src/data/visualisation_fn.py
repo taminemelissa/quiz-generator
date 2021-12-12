@@ -1,6 +1,12 @@
 # TODO : We load from pickle files, perhaps it will change
-import nltk
 from nltk.corpus import stopwords
+from nltk import RegexpTokenizer
+
+import spacy
+
+import numpy as np
+
+from sklearn.decomposition import PCA
     
 from typing import List, Any, Dict
 
@@ -28,27 +34,27 @@ except LookupError:
 # ********************* loading *************************
 
 class TextProcessing:
-    """[summary]
+    """
     In what follows:
     
     self.sequences is a list of sequences
     self.text is the whole concatenated text
-    self.text_split is the list of the split text
+    self.text_split is the list of the split text.
     """
     
     def __init__(self, path: str) -> None:
-        """[summary]
+        """
         
         Args:
-            path ([type]): [description]
+            path ([type]): path to pickle file.
         """
         
         self.path = path
     
     
     def load(self) -> None:
-        """[summary]
-        Loads everything in the pickle file
+        """
+        Loads everything in the pickle file.
         """
         
         self.sequences = []
@@ -65,12 +71,12 @@ class TextProcessing:
         
 
     def prepare(self, lower: bool = True, split: bool = True) -> None:
-        """[summary]
+        """
         Gets the text ready to input it in the next functions
         Removes the first and last spaces
         It can create the following attributes, defined above the __init__:
         self.text
-        self.text_split
+        self.text_split.
         
         Args:
             lower (bool, optional): whether to lower the text (create self.text) or not. Defaults to True.
@@ -103,15 +109,19 @@ class TextProcessing:
         
         
     def _split(self) -> None:
-        
-        self.text_split = self.text.split()
-    
+        """
+        This tokenize makes it possible to split "l'école" into ["l'", "école"], and removes ponctuation by the way.
+        """
+        tokenizer = RegexpTokenizer(r'\w+')
+
+        self.text_split = tokenizer.tokenize(self.text)
+
     
     def without_stopwords(self) -> List[str]:
-        """[summary]
+        """
 
         Returns:
-            List[str]: list of words that are not stop words
+            List[str]: list of words that are not stop words.
         """
         
         if not hasattr(self, 'text'):
@@ -123,10 +133,10 @@ class TextProcessing:
     
     
     def without_stopwords_concatenated(self) -> str:
-        """[summary]
+        """
 
         Returns:
-            str: string of the words that are not stopwords
+            str: string of the words that are not stopwords.
         """
         
         if not hasattr(self, 'word_list_without_stop_words'):
@@ -139,13 +149,13 @@ class TextProcessing:
 
 
 def cardinality_of_words(l: List[str]) -> Dict[str, int]:
-    """[summary]
+    """
 
     Args:
-        l (List[str]): list of words
+        l (List[str]): list of words.
 
     Returns:
-        Dict[str, int]: dictionary of the number of occurences per word in the list of words
+        Dict[str, int]: dictionary of the number of occurences per word in the list of words.
     """
     
     cardinalities = {}
@@ -159,3 +169,41 @@ def cardinality_of_words(l: List[str]) -> Dict[str, int]:
     sorted_cardinalities = {k: v for k, v in sorted(cardinalities.items(), key = lambda item: item[1], reverse = True)}
     
     return sorted_cardinalities
+
+
+
+class Embedding:
+    
+    def __init__(self, name) -> None:
+        """
+
+        Args:
+            name ([type]): name of the spacy model
+        """
+        
+        self.model = spacy.load(name)
+        
+    
+    def embedding(self, text: str) -> None:
+        """
+
+        Args:
+            text ([type]): string containing the text
+        """
+        
+        self.doc = self.model(text)
+        self.words = [w.text for w in self.doc]
+        self.words_embedding = [w.vector for w in self.doc]
+    
+    
+    def pca(self) -> np.ndarray:
+        
+        if not hasattr(self, 'words_embedding'):
+            raise NameError('words should be embedded first')
+        
+        pca = PCA(n_components=2)
+        
+        self.words_embedding_dim_2 = pca.fit_transform(self.words_embedding)
+        
+        return self.words_embedding_dim_2
+    
