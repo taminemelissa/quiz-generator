@@ -1,5 +1,4 @@
 import pytorch_lightning as pl
-import os
 from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 from src.data.data_format import *
 from src.data.utils import yield_batches
