@@ -41,7 +41,9 @@ class Answer(BaseItem):
                  context: Context = None,
                  identifier: str = None,
                  scores: OrderedDict[str, float] = None,
-                 meta: Dict[str, Any] = None
+                 meta: Dict[str, Any] = None,
+                 start_char_position: int = -1,
+                 end_char_position: int = -1
                  ):
         """
         :param text: the text of the answer
@@ -49,9 +51,13 @@ class Answer(BaseItem):
         :param identifier: the identifier of the context
         :param scores: the score dictionary of the context
         :param meta: the meta information
+        :param start_char_position : the position of the first character of the answer in the context
+        :param end_char_position: the position of the last character of the answer in the context
         """
         super(Answer, self).__init__(text=text, identifier=identifier, scores=scores, meta=meta)
         self.context = context
+        self.start_char_position = start_char_position
+        self.end_char_position = end_char_position
 
 
 class Question(BaseItem):
