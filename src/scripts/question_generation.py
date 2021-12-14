@@ -1,4 +1,5 @@
 from src.models.mt5_generator import MT5Generator
+from src.data.data_format import *
 from src.data.utils import *
 
 
