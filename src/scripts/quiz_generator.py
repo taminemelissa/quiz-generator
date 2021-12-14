@@ -13,7 +13,7 @@ def quiz_generator(theme: str):
     qca = QuestionContextAnswer(questions=questions)
 
     qca = extract_answers_from_contexts(qca, '')
-    qca = generate_questions(qca, 12)
+    qca = generate_questions(qca, 12, model_path='')
 
     displayed_questions = random.choices(qca.questions, k=10)
     for i in range(len(displayed_questions)):
