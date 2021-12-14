@@ -4,6 +4,12 @@ import stanza
 
 
 def extract_answers_from_contexts(qca: QuestionContextAnswer, stanza_dir: str) -> QuestionContextAnswer:
+    """
+    Extract from each context, potential answers thanks to Name Entity Recognition
+    :param qca: a QuestionContextAnswer object filled with Context objects only
+    :param stanza_dir: the direction to the English stanza model
+    :return: a QuestionContextAnswer object filled with Answer and Context objects
+    """
 
     questions = qca.questions
     nlp = stanza.Pipeline("en", processors='tokenize,ner,pos', use_gpu=True, dir=stanza_dir)
