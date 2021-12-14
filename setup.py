@@ -8,4 +8,4 @@ setup(name='quiz-generator',
       author_email='melissa.tamine@ensae.fr, adrien.serviere@ensae.fr',
       package_dir={'': 'src'},
       packages=find_packages('src'),
-      install_requires=['numpy', 'tqdm', 'wikiextractor', 'elasticsearch'])
+      install_requires=['numpy', 'tqdm', 'wikiextractor', 'elasticsearch', 'pytorch_lightning', 'transformers', 'torch', 'stanza', 'sentencepiece'])
