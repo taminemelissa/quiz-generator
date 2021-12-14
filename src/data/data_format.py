@@ -124,11 +124,13 @@ class Question(BaseItem):
 
 class QuestionContextAnswer:
     def __init__(self, questions: List[Question] = None,
-                 meta: Dict[str, Any] = None,
-                 scores: Dict = None):
+                 meta: Dict[str, Any] = None):
+        """
+        :param questions: a list of Question objects
+        :param meta: the meta information
+        """
         self.questions = questions
         self.meta = meta
-        self.scores = ordered_dict(scores or {})
 
     def __len__(self):
         return len(self.questions)
