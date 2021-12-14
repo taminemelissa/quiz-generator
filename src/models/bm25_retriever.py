@@ -45,7 +45,7 @@ class BM25Retriever:
 
     def retrieve(self, query: str, top_k: int = 0) -> List[Context]:
         """
-        Returns the top k passages in the index corresponding to the query
+        Returns the top k passages in the index corresponding to the request
         :param query: A request for information about data in the Elasticsearch index
         :param top_k: k most relevant passages according to the query
         :return: A list containing the k most relevant Context
@@ -71,4 +71,3 @@ class BM25Retriever:
 
         contexts = [self.convert_es_hit_to_context(hit) for hit in result]
         return contexts
-
