@@ -4,6 +4,14 @@ from src.data.utils import *
 
 
 def generate_questions(qca: QuestionContextAnswer, batch_size, model_path) -> QuestionContextAnswer:
+    """
+    Returns a QuestionContextAnswer object filled with Question/Context/Answer objects from a QuestionContextAnswer
+    object filled with Context/Answer objects (generation of question from context and answers)
+    :param qca: a QuestionContextAnswer object
+    :param batch_size: the batch size for the breaking down into batches of the QuestionContextAnswer object
+    :param model_path: the path of the model
+    :return: a QuestionContextAnswer object filled with questions
+    """
 
     device = "cpu"
     print('Loading...')

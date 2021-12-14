@@ -5,6 +5,10 @@ from src.data.data_format import *
 class BM25Retriever:
 
     def __init__(self, name: str = 'BM25 Retriever', **kwargs):
+        """
+        :param name: the name of the model
+        :param kwargs: the arguments of the BM25 retriever
+        """
         self.kwargs = self.fill_default_kwargs(**kwargs)
         self.name = name
         self._construct()

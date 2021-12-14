@@ -7,6 +7,9 @@ from torch.nn import DataParallel
 
 class MT5Generator(pl.LightningModule):
     def __init__(self, model_path: str):
+        """
+        :param model_path: the path of the model
+        """
         super().__init__()
         self.save_hyperparameters()
         print(self.hparams)
@@ -14,6 +17,11 @@ class MT5Generator(pl.LightningModule):
         self.tokenizer = MT5Tokenizer.from_pretrained(model_path)
 
     def generate(self, questions: List[Question]) -> List[Question]:
+        """
+        Generates a list of questions from pairs of contexts and answers
+        :param questions: list of Question objects composed of pairs of context/answer
+        :return: list of Question objects composed of triplets context/answer/question
+        """
         result = []
         all_answers = QuestionContextAnswer(questions=questions).get_all_answers()
         if all_answers:

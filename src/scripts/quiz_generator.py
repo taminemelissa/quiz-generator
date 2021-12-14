@@ -6,6 +6,10 @@ from src.scripts.question_generation import generate_questions
 
 
 def quiz_generator(theme: str):
+    """
+    Generates a quiz composed of 10 questions/answers pairs about a given theme
+    :param theme: the theme of the quiz
+    """
 
     bm25 = BM25Retriever()
     contexts = bm25.retrieve(query=theme)
@@ -13,7 +17,7 @@ def quiz_generator(theme: str):
     qca = QuestionContextAnswer(questions=questions)
 
     qca = extract_answers_from_contexts(qca, '')
-    qca = generate_questions(qca, 12, model_path='')
+    qca = generate_questions(qca, 12, model_path="Narrativa/mT5-base-finetuned-tydiQA-question-generation")
 
     displayed_questions = random.choices(qca.questions, k=10)
     for i in range(len(displayed_questions)):
