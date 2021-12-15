@@ -11,6 +11,13 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
+def set_es_client():
+    """Connection with ElasticSearch in the DataLab"""
+    
+    es = Elasticsearch([{'host': HOST, 'port': 9200}], http_compress=True,  timeout=200)
+    return es
+
+
 def convert_wikipedia_dump_to_documents(args, batch):
     """
     Convert Wikipedia dumps (text files) into dictionaries of documents composed of paragraphs
