@@ -11,10 +11,10 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-def set_es_client():
+def set_es_client(host='elasticsearch-master'):
     """Connection with ElasticSearch in the DataLab"""
     
-    es = Elasticsearch([{'host': HOST, 'port': 9200}], http_compress=True,  timeout=200)
+    es = Elasticsearch([{'host': host, 'port': 9200}], http_compress=True,  timeout=200)
     return es
 
 
