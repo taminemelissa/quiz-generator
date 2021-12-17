@@ -17,6 +17,13 @@ def set_es_client(host='elasticsearch-master'):
     es = Elasticsearch([{'host': host, 'port': 9200}], http_compress=True,  timeout=200)
     return es
 
+def fill_default_args():
+    args = {"directory": "./data/wikipedia",
+        "batch_size": 12,
+        "min_len_paragraph": 100,
+        "language": "english"}
+    return args
+
 
 def convert_wikipedia_dump_to_documents(args, batch):
     """
