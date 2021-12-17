@@ -25,9 +25,7 @@ and after the commas.
 ## Presentation of functions:
 Type-hint added this way, 
 ``` 
-def __init__(self, k:int) -> None:
+def __init__(self, k: int) -> None:
         pass
 ``` 
-description of the function just after the def in double quotes, not with # in the middle in "clean" versions, 
-single quotes instead of double quotes for strings.
-
+The description of the function should be just after the definition in triple quotes.
