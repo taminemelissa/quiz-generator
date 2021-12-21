@@ -14,7 +14,8 @@ rm "quiz-generator/data/wikipedia/simplewiki-latest-pages-articles.xml.bz2"
 ```
 
 ## English Stanza
-We download the English version of Stanza.
+We download the English version of Stanza for using it as a Name Entity
+Recognition tool. 
 ```
 import stanza
 stanza.download('en', model_dir="quiz-generator/data/stanza")
