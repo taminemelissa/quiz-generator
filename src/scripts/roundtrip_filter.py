@@ -19,7 +19,7 @@ qa_pipeline = pipeline(
 
 
 def normalize(s: str) -> str:
-    """[summary]
+    """
 
     Args:
         s (str): string to be normalized, i.e. lowered and without punctuation
@@ -38,14 +38,15 @@ def normalize(s: str) -> str:
 
 
 def roundtrip_filter(qca: QuestionContextAnswer, threshold: int = 5) -> QuestionContextAnswer:
-    """[summary]
+    """
 
     Args:
         qca (QuestionContextAnswer): QuestionContextAnswer instance that we want to filter
 
     Returns:
         QuestionContextAnswer: QuestionContextAnswer instance containing only contexts and answers that are 'correct',
-        i.e. whose answer is not to far from the one found by the BERT model in the sense of the Levenshtein distance
+        i.e. whose answer is not to far from the one found by the BERT model in the sense of the Levenshtein distance.
+        The following code only returns the best answer to the question
     """
     
     levenshtein = Levenshtein()
