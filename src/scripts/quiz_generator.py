@@ -3,6 +3,7 @@ from src.data.data_format import *
 from src.models.bm25_retriever import BM25Retriever
 from src.scripts.answer_extraction import extract_answers_from_contexts
 from src.scripts.question_generation import generate_questions
+from src.scripts.roundtrip_filter import roundtrip_filter
 
 
 def quiz_generator(theme: str):
@@ -18,6 +19,7 @@ def quiz_generator(theme: str):
 
     qca = extract_answers_from_contexts(qca, '')
     qca = generate_questions(qca, 12, model_path="Narrativa/mT5-base-finetuned-tydiQA-question-generation")
+    qca = roundtrip_filter(qca, threshold = 6)
 
     displayed_questions = random.choices(qca.questions, k=10)
     for i in range(len(displayed_questions)):
