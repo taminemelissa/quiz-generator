@@ -1,4 +1,4 @@
-LANGUAGE = 'french'
+LANGUAGE = 'english'
 
 PATH_TO_PICKLE = '../../data/example_paragraph'
 

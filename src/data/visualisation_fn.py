@@ -1,4 +1,3 @@
-# TODO : We load from pickle files, perhaps it will change
 from nltk.corpus import stopwords
 from nltk import RegexpTokenizer
 
@@ -27,7 +26,7 @@ except LookupError:
     nltk.download('stopwords')
     STOPWORDS = set(stopwords.words(c.LANGUAGE))
 
-from src.data.data_format import *
+from data_format import *
 
 
 
