@@ -27,6 +27,8 @@ except LookupError:
     nltk.download('stopwords')
     STOPWORDS = set(stopwords.words(c.LANGUAGE))
 
+from src.data.data_format import *
+
 
 
 
@@ -36,13 +38,15 @@ except LookupError:
 class TextProcessing:
     """
     In what follows:
+    self.path is the path to a pickle file containing string sequences
+    self.retrieved_contexts is a list of contexts instances defined in data_format
     
     self.sequences is a list of sequences
     self.text is the whole concatenated text
     self.text_split is the list of the split text.
     """
     
-    def __init__(self, path: str) -> None:
+    def __init__(self, retrieved_contexts: List[Context] = None, path: str = None) -> None:
         """
         
         Args:
@@ -50,6 +54,7 @@ class TextProcessing:
         """
         
         self.path = path
+        self.retrieved_contexts = retrieved_contexts
     
     
     def load(self) -> None:
@@ -57,18 +62,24 @@ class TextProcessing:
         Loads everything in the pickle file.
         """
         
-        self.sequences = []
+        if self.path:
+
+            self.sequences = []
+            
+            with open(self.path, 'rb') as f:
+                while True:
+                    try:
+                        o = pickle.load(f)
+                    except EOFError:
+                        break
+                    finally :
+                        print('extraction done')
+                    self.sequences.append(o)
         
-        with open(self.path, 'rb') as f:
-            while True:
-                try:
-                    o = pickle.load(f)
-                except EOFError:
-                    break
-                finally :
-                    print('extraction done')
-                self.sequences.append(o)
-        
+        elif self.retrieved_contexts:
+
+            self.sequences = [context.text for context in self.retrieved_contexts]
+
 
     def prepare(self, lower: bool = True, split: bool = True) -> None:
         """
