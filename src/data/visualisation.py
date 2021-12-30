@@ -13,21 +13,16 @@ import pickle
 
 import re
 
-try:
-    import constants as c
-except ImportError:
-    c = None
-    raise ImportError('constants' + ' not imported')
+from src.data.constants import *
 
 try:
-    STOPWORDS = set(stopwords.words(c.LANGUAGE))
+    STOPWORDS = set(stopwords.words(LANGUAGE))
 except LookupError:
     import nltk
     nltk.download('stopwords')
-    STOPWORDS = set(stopwords.words(c.LANGUAGE))
+    STOPWORDS = set(stopwords.words(LANGUAGE))
 
-from data_format import *
-
+from src.data.data_format import *
 
 
 
