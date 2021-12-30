@@ -11,6 +11,8 @@ from typing import List, Any, Dict
 
 import pickle
 
+import matplotlib.pyplot as plt
+
 import re
 
 from src.data.constants import *
