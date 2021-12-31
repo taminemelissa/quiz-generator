@@ -4,29 +4,22 @@ from src.data.data_format import *
 
 class BM25Retriever:
 
-    def __init__(self, name: str = 'BM25 Retriever', **kwargs):
+    def __init__(self, client, name: str = 'BM25 Retriever', **kwargs):
         """
         :param name: the name of the model
         :param kwargs: the arguments of the BM25 retriever
         """
         self.kwargs = self.fill_default_kwargs(**kwargs)
         self.name = name
-        self._construct()
+        self.client = client
 
     @classmethod
     def fill_default_kwargs(cls, **kwargs) -> Dict:
         kwargs.update(dict(
             top_k=kwargs.get("top_k", 10),
-            host=kwargs.get("host", "localhost"),
-            index=kwargs.get("index", "wikipedia_french")))
+            index=kwargs.get("index", "wikipedia_english")))
         return kwargs
 
-    def _construct(self):
-        self.client = Elasticsearch(hosts=[{"host": self.kwargs.get("host"),
-                                            "port": 9200}],
-                                    http_compress=True,
-                                    timeout=200)
-        self.index = self.kwargs.get("index")
 
     def convert_es_hit_to_context(self, hit: dict) -> Context:
         """
@@ -36,8 +29,8 @@ class BM25Retriever:
         """
 
         meta = {k: v for k, v in hit["_source"].items() if
-                k not in ("text", "external_source_id")}
-        meta["external_source_id"] = hit["_source"]["external_source_id"],
+                k not in ("text", "id")}
+        meta["id"] = hit["_source"]["id"],
         meta["document_title"] = meta.pop("name", None)
 
         return Context(
@@ -55,7 +48,7 @@ class BM25Retriever:
         :return: A list containing the k most relevant Context
         """
 
-        index = self.index
+        index = self.kwargs.get('index')
         if top_k == 0:
             top_k = self.kwargs.get('top_k')
 
