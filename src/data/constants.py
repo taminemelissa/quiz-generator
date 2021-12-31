@@ -4,6 +4,6 @@ PATH_TO_PICKLE = '../../data/example_paragraph'
 
 N_STRINGS = 10000000
 
-N_MOST_COMMON = 30
+N_MOST_COMMON = 15
 
-MODEL_NAME = 'fr_core_news_sm'
+MODEL_NAME = 'en_core_web_sm'

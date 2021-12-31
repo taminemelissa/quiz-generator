@@ -8,16 +8,6 @@ from src.data.data_format import *
 
 
 
-
-
-qa_pipeline = pipeline(
-    "question-answering",
-    model="csarron/roberta-base-squad-v1",
-    tokenizer="csarron/roberta-base-squad-v1"
-)
-
-
-
 def normalize(s: str) -> str:
     """
 
@@ -37,11 +27,12 @@ def normalize(s: str) -> str:
 
 
 
-def roundtrip_filter(qca: QuestionContextAnswer, threshold: int = 5) -> QuestionContextAnswer:
+def roundtrip_filter(qca: QuestionContextAnswer, model_path : str, threshold: int = 5) -> QuestionContextAnswer:
     """
 
     Args:
         qca (QuestionContextAnswer): QuestionContextAnswer instance that we want to filter
+        model_path: Path of the BERT model fine-tuned for Question Answering
 
     Returns:
         QuestionContextAnswer: QuestionContextAnswer instance containing only contexts and answers that are 'correct',
@@ -49,9 +40,12 @@ def roundtrip_filter(qca: QuestionContextAnswer, threshold: int = 5) -> Question
         The following code only returns the best answer to the question
     """
     
+    qa_pipeline = pipeline("question-answering", model=model_path, tokenizer=model_path)
+    
     levenshtein = Levenshtein()
     new_questions = []
     
+    print('..... Start filtering questions')
     for q in tqdm(qca.questions):
         
         context = ' '.join([context.text for context in q.retrieved_contexts])
@@ -64,7 +58,7 @@ def roundtrip_filter(qca: QuestionContextAnswer, threshold: int = 5) -> Question
         
         min_levenshtein_distance = inf
         
-        for predicted_answer in tqdm(q.predicted_answers): # we find the best answer in the sens of the Levenshtein distance
+        for predicted_answer in q.predicted_answers: # we find the best answer in the sens of the Levenshtein distance
 
             if levenshtein.distance(normalize(predicted_answer.text), normalize(bert_answer)) < min_levenshtein_distance:
                 

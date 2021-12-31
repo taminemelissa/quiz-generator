@@ -11,23 +11,22 @@ from typing import List, Any, Dict
 
 import pickle
 
+import matplotlib.pyplot as plt
+
 import re
 
-try:
-    import constants as c
-except ImportError:
-    c = None
-    raise ImportError('constants' + ' not imported')
+from src.data.constants import *
 
 try:
-    STOPWORDS = set(stopwords.words(c.LANGUAGE))
+    STOPWORDS = set(stopwords.words(LANGUAGE))
 except LookupError:
     import nltk
     nltk.download('stopwords')
-    STOPWORDS = set(stopwords.words(c.LANGUAGE))
+    STOPWORDS = set(stopwords.words(LANGUAGE))
 
-from data_format import *
+from src.data.data_format import *
 
+from pywaffle import Waffle
 
 
 
@@ -216,4 +215,12 @@ class Embedding:
         self.words_embedding_dim_2 = pca.fit_transform(self.words_embedding)
         
         return self.words_embedding_dim_2
+
     
+def graph_occurrence(word, contexts):
+    data = {}
+    for i in range(len(contexts)):
+        total_occurrences = contexts[i].text.lower().count(word)
+        data[i] = total_occurrences
+    fig = plt.figure(FigureClass=Waffle,rows=4,values=data,title={'label': 'Utilisation du mot "%s" dans les différents contextes' %word, 'loc': 'left'}, labels=["{0} ({1})".format(k, v) for k, v in data.items()])
+    return fig
