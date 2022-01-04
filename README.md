@@ -14,7 +14,7 @@ Dans la mesure où l'objectif principal d'un quiz est d’évaluer les connaissa
 
 https://github.com/taminemelissa/quiz-generator/blob/main/final-project.ipynb
 
-## Recommandations d'exécution
+## Recommandation d'exécution
 
 Veuillez exécuter les cellules de ce notebook au sein d'un **espace de travail muni d'un service ElasticSearch préalablement exécuté** afin que la partie indexation puisse fonctionner. Nous vous conseillons d'utiliser **SSP Cloud** car la technologie ElasticSearch y est disponible.
 
