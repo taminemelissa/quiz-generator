@@ -9,3 +9,4 @@ setup(name='quiz-generator',
       package_dir={'': 'src'},
       packages=find_packages('src'),
       install_requires=['numpy', 'tqdm', 'wikiextractor', 'elasticsearch', 'torch', 'pytorch_lightning', 'transformers', 'stanza', 'sentencepiece', 'strsimpy', 'ipywidgets', 'seaborn', 'wordcloud', 'nltk', 'spacy', 'scikit-learn', 'ipykernel', 'nbconvert'])
+
