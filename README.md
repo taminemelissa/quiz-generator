@@ -10,7 +10,7 @@ Ce projet s'articule autour de la problématique suivante : **Comment créer un 
 
 Dans la mesure où l'objectif principal d'un quiz est d’évaluer les connaissances d’un participant, il nous a semblé qu'un tel système pourrait s'avérer très utile à des enseignants afin de tester de manière ludique les acquis de leurs élèves par exemple. 
 
-## Lien vers le notebook du projet final
+## Lien vers le Notebook final
 
 https://github.com/taminemelissa/quiz-generator/blob/main/final-project.ipynb
 
